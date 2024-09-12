@@ -1,6 +1,7 @@
 import { configure } from "./deps.js";
 import * as mainController from "./controllers/mainController.js";
-import * as shoppingListController from "./controllers/shoppingListsController.js";
+import * as shoppingItemsController from "./controllers/shoppingItemsController.js";
+import * as shoppingListsController from "./controllers/shoppingListsController.js";
 
 configure({
   views: `${Deno.cwd()}/views/`,
@@ -12,14 +13,18 @@ const handleRequest = async (request) => {
   if (url.pathname === "/" && request.method === "GET") 
     return await mainController.viewMainPage(request);
   else if (url.pathname === "/lists" && request.method === "GET") 
-    return await shoppingListController.viewActiveLists(request);
+    return await shoppingListsController.viewActiveLists(request);
   else if (url.pathname === "/lists" && request.method === "POST")
-    return await shoppingListController.addList(request);
+    return await shoppingListsController.addList(request);
+  else if (url.pathname.match("/lists/[0-9]+") && request.method === "GET")
+    return await shoppingItemsController.viewShoppingItems(request);
+  else if (url.pathname.match("/lists/[0-9]+/") && request.method === "POST")
+    return await shoppingItemsController.addItem(request);
   else if (url.pathname.match("/lists/[0-9]+/deactivate") && request.method === "POST")
-    return await shoppingListController.deactivateList(request);
-
+    return await shoppingListsController.deactivateList(request);
 
   
+
   else return new Response("Not found", { status: 404 });
 };
 
