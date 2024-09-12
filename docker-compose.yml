@@ -2,12 +2,12 @@ version: "3.4"
 
 services:
   app:
-    build: app
-    image: app
+    build: shopping-lists
+    image: shopping-lists
     restart: "no"
     volumes:
-      - ./app/:/app
-      - ./app-cache/:/app-cache
+      - ./shopping-lists/:/shopping-lists
+      - ./shopping-lists-cache/:/shopping-lists-cache
     ports:
       - 7777:7777
     depends_on:
@@ -17,7 +17,7 @@ services:
       - project.env
 
   database:
-    container_name: database-server
+    container_name: SSLists-server
     image: postgres:14.1
     restart: "no"
     env_file:
@@ -39,6 +39,6 @@ services:
     image: e2e-playwright
     network_mode: host
     depends_on:
-      - app
+      - shopping-lists
     volumes:
       - ./e2e-playwright/tests:/e2e-playwright/tests
