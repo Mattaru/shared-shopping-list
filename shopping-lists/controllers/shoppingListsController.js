@@ -3,6 +3,7 @@ import { redirectTo } from "../utils/requestUtils.js";
 import { responseDetails } from "../utils/responseUtils.js";
 import * as shoppingListsService from "../services/shoppingListsService.js";
 
+
 const addList = async(request) => {
     const formData = await request.formData();
     const name = formData.get("name");
@@ -28,6 +29,7 @@ const viewActiveLists = async(request) => {
 
     return new Response(await renderFile("shoppingLists.eta", data), responseDetails);
 };
+
 
 export { 
     addList,
