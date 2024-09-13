@@ -24,6 +24,7 @@ const deactivateList = async(request) => {
 
 const viewActiveLists = async(request) => {
     const data = {
+        title: "Shopping lists",
         shopping_lists: (await shoppingListsService.findAllActive()).rows,
     };
 

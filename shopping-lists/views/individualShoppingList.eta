@@ -2,25 +2,44 @@
 
 <h1><%= it.shoppingList.name %></h1>
 
-<a href="/lists">Shopping lists</a>
+<nav><a href="/lists">Shopping lists</a></nav>
 
-<form method="POST" action="/lists/<%= it.shoppingList.id %>/items">
-    <input type="text" name="name"/>
-    <input type="submit" value="Add item"/>
-</form>
+<br/>
+<br/>
 
-<ol>
-<% it.notCollectedItems.forEach((item) => { %>
-    <li>
-        <p><%= item.name %></p>
-        <form method="POST" action="/lists/<%= it.shoppingList.id %>/items/<%= item.id %>/collect">
-            <input type="submit" value="Mark collected!"/>
-        </form>
-    </li>
-<% }); %>
-<% it.collectedItems.forEach((item) => { %>
-    <li>
-        <p><del><%= item.name %></del></p>
-    </li>
-<% }); %>
-</ol>
+<div class="container">
+    <form method="POST" action="/lists/<%= it.shoppingList.id %>/items">
+        <div class="row">
+            <div class="col">
+                <input type="text" name="name"/>
+            </div>
+            <div class="col">
+                <input type="submit" value="Add item"/>
+            </div>
+        </div>
+    </form>
+</div>
+
+<br/>
+
+<div class="container">
+    <ol>
+    <% it.notCollectedItems.forEach((item) => { %>
+        <li>
+            <div class="row">
+                <div class="col"><p><%= item.name %></p></div>
+                <div class="col">
+                    <form method="POST" action="/lists/<%= it.shoppingList.id %>/items/<%= item.id %>/collect">
+                        <input type="submit" value="Mark collected!"/>
+                    </form>
+                </div>
+            </div>
+        </li>
+    <% }); %>
+    <% it.collectedItems.forEach((item) => { %>
+        <li>
+            <p><del><%= item.name %></del></p>
+        </li>
+    <% }); %>
+    </ol>
+</div>

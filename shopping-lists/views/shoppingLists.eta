@@ -1,19 +1,38 @@
 <% layout("./layouts/layout.eta") %>
 
-<a href="/">Main page</a>
+<h1><%= it.title %></h1>
 
-<form method="POST">
-    <input type="text" name="name"/>
-    <input type="submit" value="Add list"/>
-</form>
+<nav><a href="/">Main page</a></nav>
 
-<ul>
-<% it.shopping_lists.forEach((list) => { %>
-    <li>
-        <a href="/lists/<%= list.id %>"><%= list.name %></a>
-        <form method="POST" action="/lists/<%= list.id %>/deactivate">
-            <input type="submit" value="Deactivate"/>
-        </form>
-    </li>
-<% }); %>
-</ul>
+<br/>
+<br/>
+
+<div class="container">
+    <form method="POST">
+        <div class="row">
+            <div class="col"><input type="text" name="name"/></div>
+            <div class="col"><input type="submit" value="Add list"/></div>
+        </div>
+    </form>
+</div>
+
+<br/>
+
+<div class="container">
+    <ol>
+    <% it.shopping_lists.forEach((list) => { %>
+        <li>
+            <div class="row">
+                <div class="col">
+                    <a href="/lists/<%= list.id %>"><%= list.name %></a>
+                </div>
+                <div class="col">
+                    <form method="POST" action="/lists/<%= list.id %>/deactivate">
+                        <input type="submit" value="Deactivate"/>
+                    </form>
+                </div>
+            </div>
+        </li>
+    <% }); %>
+    </ol>
+</div>

@@ -28,6 +28,12 @@ const getCollectedFromList = async(listId, collected = false, sorted = false) =>
             { listId: listId, collected, collected });
 };
 
+const getItemsCount = async() => {
+    return await executeQuery(`SELECT COUNT(*) 
+        AS count 
+        FROM shopping_list_items;`);
+};
+
 const findAllFromList = async(listID) => {
     return await executeQuery(`SELECT * FROM shopping_list_items 
         WHERE shopping_list_id = $listID;`,
@@ -39,5 +45,6 @@ export {
     add,
     collected,
     getCollectedFromList,
+    getItemsCount,
     findAllFromList,
 };
