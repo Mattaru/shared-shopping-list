@@ -25,7 +25,7 @@ const getCollectedFromList = async(listId, collected = false, sorted = false) =>
         return await executeQuery(`SELECT * FROM shopping_list_items 
             WHERE shopping_list_id = $listId  
             AND collected = $collected`, 
-            { listId: listId, collected, collected });
+            { listId: listId, collected: collected });
 };
 
 const getItemsCount = async() => {
