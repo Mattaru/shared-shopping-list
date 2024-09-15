@@ -1,0 +1,52 @@
+<% layout("../layouts/layout.eta") %>
+
+
+<h1><%= it.title %></h1>
+
+<nav><a href="/">Main page</a></nav>
+
+<br/>
+<br/>
+
+<div class="container">
+    <h3>All shopping lists with items:</h3>
+</div>
+
+<br/>
+
+<div class="container">
+    <ol>
+    <% it.shopping_lists.forEach((list) => { %>
+        <li>
+            <div class="row">
+                <div class="col">
+                    <p href="/lists/<%= list.id %>"><%= list.name %></p>
+                </div>
+                <div class="col">
+                    <form method="POST" action="/admin/<%= list.id %>/delete">
+                        <input type="submit" value="Delete"/>
+                    </form>
+                </div>
+            </div>
+            <ol>
+            <% if (list.items) { %>
+                <% list.items.forEach((item) => { %> 
+                    <div class="row">
+                        <div class="col">
+                            <p><%= item.name %></p>
+                        </div>
+                        <div class="col">
+                            <% if (item.cillected) { %>
+                                <p>- collected</p>
+                            <% } else { %>
+                                <p>- not collected</p>
+                            <% }; %>
+                        </div>
+                    </div>
+                <% }); %>
+            <% }; %>
+            </ol>
+        </li>
+    <% }); %>
+    </ol>
+</div>

@@ -14,6 +14,12 @@ const collected = async(itemId, collected = true) => {
         { collected: collected, itemId: itemId,  });
 };
 
+const deletByListId = async(listId) => {
+    await executeQuery(`DELETE FROM shopping_list_items 
+        WHERE shopping_list_id = $listId`, 
+        { listId: listId });
+};
+
 const getCollectedFromList = async(listId, collected = false, sorted = false) => {
     if (sorted)
         return await executeQuery(`SELECT * FROM shopping_list_items 
@@ -44,6 +50,7 @@ const findAllFromList = async(listID) => {
 export {
     add,
     collected,
+    deletByListId,
     getCollectedFromList,
     getItemsCount,
     findAllFromList,

@@ -13,6 +13,11 @@ const deactivate = async(id) => {
         { id: id });
 };
 
+const deleteById = async(id) => {
+    await executeQuery(`DELETE FROM shopping_lists WHERE id = $id`, 
+        { id: id });
+};
+
 const getById = async(id) => {
     return await executeQuery(`SELECT * FROM shopping_lists 
         WHERE id = $id;`, 
@@ -34,6 +39,7 @@ const findAllActive = async() => {
 export { 
     add,
     deactivate,
+    deleteById,
     getById,
     getListsCount,
     findAllActive,

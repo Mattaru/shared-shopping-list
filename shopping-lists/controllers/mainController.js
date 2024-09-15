@@ -7,12 +7,12 @@ const viewMainPage = async(request) => {
     const data = {
         title: "Shared shopping lists",
         statistic: {
-          itemsCount: (await shoppingItemsService.getItemsCount()).rows[0].count,
-          listsCount:(await shoppingListsService.getListsCount()).rows[0].count,
+            itemsCount: (await shoppingItemsService.getItemsCount()).rows[0].count,
+            listsCount:(await shoppingListsService.getListsCount()).rows[0].count,
         },
-      };
+    };
     
-      return new Response(await renderFile("main.eta", data), responseDetails);
+    return new Response(await renderFile("main.eta", data), responseDetails);
 };
 
 export { viewMainPage };
