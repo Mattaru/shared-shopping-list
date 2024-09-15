@@ -1,2 +1,4 @@
-app-cache/deps/**
-app-cache/gen/**
+shopping-lists-cache/deps/**
+shopping-lists-cache/gen/**
+shopping-lists-cache/npm/**
+shopping-lists-cache/**
