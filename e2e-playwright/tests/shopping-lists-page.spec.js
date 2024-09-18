@@ -1,9 +1,12 @@
 import { test, expect } from '@playwright/test';
+import * as fixturesService from "../services/fixturesService.js";
 
+
+const randomName = `Name${Math.random()}`;
 
 test.describe('Shopping Lists Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/lists');
+    await page.goto(`/lists`);
   });
 
   test('Render the page layout correctly.', async ({ page }) => {
@@ -17,19 +20,18 @@ test.describe('Shopping Lists Page', () => {
     const nameInput = await page.locator('input[name="name"]');
     await expect(nameInput).toBeVisible();
 
-    const submitButton = await page.locator('input[type="submit"]');
+    const submitButton = await page.locator('input[type="submit"][value="Add list"]');
     await expect(submitButton).toHaveValue('Add list');
   });
 
   test('Allow adding a new shopping list.', async ({ page }) => {
     const nameInput = await page.locator('input[name="name"]');
-    const submitButton = await page.locator('input[type="submit"]');
-    const testName = `Name${Math.random()}`;
+    const submitButton = page.locator('input[type="submit"][value="Add list"]');
 
-    await nameInput.fill(testName);
+    await nameInput.fill(randomName);
     await submitButton.click();
 
-    const newList = await page.locator('ol li a', { hasText: testName });
+    const newList = await page.locator('ol li a', { hasText: randomName });
     await expect(newList).toBeVisible();
   });
 
@@ -45,33 +47,30 @@ test.describe('Shopping Lists Page', () => {
 
     const remainingListItems = await page.locator('ol li a', { hasText: listName });
     await expect(remainingListItems).toHaveCount(0);
+
+    await fixturesService.deleteListByName(randomName);
   });
 
   test('Navigate to the individual shopping list page', async ({ page }) => {
-    // Add new list for testing
-    const nameInput = await page.locator('input[name="name"]');
-    const submitButton = await page.locator('input[type="submit"]');
-    const testName = `Name${Math.random()}`;
+    await fixturesService.addList(randomName);
+    await page.goto(`/lists`);
 
-    await nameInput.fill(testName);
-    await submitButton.click();
+    const listItems = await page.locator('ol li a', { hasText: randomName });
+    const listText = await listItems.textContent(); 
 
-    // Testing navigation
-    const listItems = await page.locator('ol li a');
-    const listLink = listItems.first();
-    const listText = await listLink.textContent(); 
-
-    await listLink.click();
+    await listItems.click();
 
     await expect(page).toHaveURL(new RegExp('/lists/\\d+'));
 
     await expect(page.locator('h1')).toHaveText(listText || '');
+
+    await fixturesService.deleteListByName(randomName);
   });
 
   test('Redirect to the correct URL after clicking "Lists" link.', async ({ page }) => {
     await page.click('nav a:has-text("Main page")');
-    await page.waitForURL('/');
+    await page.waitForURL('http://host.docker.internal:7777/');
     
-    expect(page.url()).toBe('http://localhost:7777/');
+    expect(page.url()).toBe('http://host.docker.internal:7777/');
   });
 });

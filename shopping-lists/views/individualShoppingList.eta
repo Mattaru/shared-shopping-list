@@ -11,7 +11,7 @@
     <form method="POST" action="/lists/<%= it.shoppingList.id %>/items">
         <div class="row">
             <div class="col">
-                <input type="text" name="name"/>
+                <input type="text" name="name" required/>
             </div>
             <div class="col">
                 <input type="submit" value="Add item"/>

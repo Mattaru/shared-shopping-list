@@ -24,6 +24,12 @@ const getById = async(id) => {
         { id: id });
 };
 
+const getByName = async(name) => {
+    return await executeQuery(`SELECT * FROM shopping_lists 
+        WHERE name = $name;`, 
+        { name: name });
+};
+
 const getListsCount = async() => {
     return await executeQuery(`SELECT COUNT(*) 
         AS count 
@@ -41,6 +47,7 @@ export {
     deactivate,
     deleteById,
     getById,
+    getByName,
     getListsCount,
     findAllActive,
  };

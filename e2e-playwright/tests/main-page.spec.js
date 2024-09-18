@@ -32,8 +32,8 @@ test.describe('Main Page', () => {
 
   test('Redirect to the correct URL after clicking "Lists" link.', async ({ page }) => {
     await page.click('nav a:has-text("Lists")');
-    await page.waitForURL('/lists');
+    await page.waitForURL('http://host.docker.internal:7777/lists');
     
-    expect(page.url()).toBe('http://localhost:7777/lists');
+    expect(page.url()).toBe('http://host.docker.internal:7777/lists');
   });
 });

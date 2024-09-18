@@ -13,13 +13,19 @@ services:
       - flyway
     env_file:
       - project.env
+    networks:
+      - mynetwork
 
   database:
     container_name: SSLists-server
     image: postgres:14.1
     restart: "no"
+    ports:
+    - 5432:5432
     env_file:
-        - project.env
+      - project.env
+    networks:
+      - mynetwork
 
   flyway:
     image: flyway/flyway:9.11.0-alpine
@@ -30,13 +36,22 @@ services:
     command: -connectRetries=60 -baselineOnMigrate=true migrate
     env_file:
       - project.env
+    networks:
+      - mynetwork
 
   e2e-playwright:
-    entrypoint: "/bin/true" # Prevent startup on docker-compose up
+    entrypoint: "/bin/true"
     build: e2e-playwright
     image: e2e-playwright
-    network_mode: host
     depends_on:
       - shopping-lists
     volumes:
       - ./e2e-playwright/tests:/e2e-playwright/tests
+    env_file:
+      - project.env
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

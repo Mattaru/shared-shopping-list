@@ -20,7 +20,7 @@
         <li>
             <div class="row">
                 <div class="col">
-                    <p href="/lists/<%= list.id %>"><%= list.name %></p>
+                    <p>Name: <%= list.name %> - Active: <%= list.active %></p>
                 </div>
                 <div class="col">
                     <form method="POST" action="/admin/<%= list.id %>/delete">
@@ -36,7 +36,7 @@
                             <p><%= item.name %></p>
                         </div>
                         <div class="col">
-                            <% if (item.cillected) { %>
+                            <% if (item.collected) { %>
                                 <p>- collected</p>
                             <% } else { %>
                                 <p>- not collected</p>

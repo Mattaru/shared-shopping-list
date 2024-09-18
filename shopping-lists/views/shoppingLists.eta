@@ -10,7 +10,7 @@
 <div class="container">
     <form method="POST">
         <div class="row">
-            <div class="col"><input type="text" name="name"/></div>
+            <div class="col"><input type="text" name="name" required/></div>
             <div class="col"><input type="submit" value="Add list"/></div>
         </div>
     </form>
