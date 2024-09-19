@@ -29,6 +29,7 @@ services:
 
   flyway:
     image: flyway/flyway:9.11.0-alpine
+    restart: "no"
     depends_on:
       - database
     volumes:
