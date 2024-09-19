@@ -26,7 +26,7 @@ test.describe('Shopping Lists Page', () => {
 
   test('Allow adding a new shopping list.', async ({ page }) => {
     const nameInput = await page.locator('input[name="name"]');
-    const submitButton = page.locator('input[type="submit"][value="Add list"]');
+    const submitButton = await page.locator('input[type="submit"][value="Add list"]');
 
     await nameInput.fill(randomName);
     await submitButton.click();

@@ -2,8 +2,8 @@ import { executeQuery } from "../database/database.js";
 
 
 const addItem = async(name) => {
-    return await executeQuery(`INSERT INTO shopping_list_items(name) 
-        VALUES($1) RETURNING *`, name);
+    return (await executeQuery(`INSERT INTO shopping_list_items(name) 
+        VALUES($1) RETURNING *`, name));
 };
 
 const addList = async(name) => {

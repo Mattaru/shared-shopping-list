@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+const { test, expect } = require("@playwright/test");
 import * as fixturesService from "../services/fixturesService.js";
 
 
@@ -7,19 +7,19 @@ const commonData = {
   randomName: `Item${Math.random()}`,
 };
 
-test.describe('Individual Shopping List Page', () => {
+test.describe('Individual Shopping List Page', async() => {
+
   test('DB create test List.', async () => {
-    commonData.testList = await fixturesService.addList(commonData.randomName);
+    commonData.testList = (await fixturesService.addList(`List${Math.random()}`)).rows[0];
   });
 
   test.beforeEach(async ({ page }) => {
     await page.goto(`/lists/${commonData.testList.id}`);
-    
   });
 
   test('Render the page layout correctly.', async ({ page }) => {
-    const title = await page.locator('h1').textContent();
-    expect(title).toBe(commonData.testList.name);
+    const title = await page.locator('h1');
+    await expect(title).toHaveText(commonData.testList.name);
 
     await expect(page.locator('nav a')).toHaveText('Shopping lists');
 
@@ -27,22 +27,37 @@ test.describe('Individual Shopping List Page', () => {
   });
 
   test('Add a new item to the shopping list.', async ({ page }) => {
-    await page.fill('form[action^="/lists/"][method="POST"] input[name="name"]',
-       commonData.randomName);
-    await page.click('form[action^="/lists/"][method="POST"] input[type="submit"]');
+    const nameInput = await page.locator('input[name="name"]');
+    const submitButton = await page.locator('input[type="submit"][value="Add item"]');
 
-    await expect(page.locator(`ol li:has-text(${commonData.randomName})`)).toBeVisible();
+    await nameInput.fill(commonData.randomName);
+    await submitButton.click();
 
-    await fixturesService.deleteItemByName(commonData.randomName);
+    const newItem = await page.locator(`ol li:has-text("${commonData.randomName}")`);
+    await expect(newItem).toBeVisible();
   });
 
   test('Mark an item as collected.', async ({ page }) => {
-    const itemToCollect = page.locator('ol li:has-text("New Item")');
+    const itemToCollect = page.locator(`ol li:has-text("${commonData.randomName}")`);
     
     await expect(itemToCollect).toBeVisible();
 
     await itemToCollect.locator('form[action*="/collect"] input[type="submit"]').click();
 
-    await expect(page.locator('ol li p:has-text("New Item")')).toHaveText(/<del>Item to Mark<\/del>/);
+    const collectedItem = await page.locator(`ol li:has-text("${commonData.randomName}") del`);
+    await expect(collectedItem).toBeVisible();
+
+    await fixturesService.deleteItemByName(commonData.randomName);
+  });
+
+  test('Redirect to the correct URL after clicking "Shopping lists" link.', async ({ page }) => {
+    await page.click('nav a:has-text("Shopping lists")');
+    await page.waitForURL('http://host.docker.internal:7777/lists');
+    
+    expect(page.url()).toBe('http://host.docker.internal:7777/lists');
+  });
+
+  test('Delited the test List from db.', async () => {
+    await fixturesService.deletListById(commonData.testList.id);
   });
 });
