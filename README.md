@@ -7,15 +7,19 @@ When we have an active shopping list, we can click on it and we will see the sho
  where we can add items to our list and mark these items as collected.
 
 ## Demo
-> Not deployed yet.
-> Live demo [_here_](//.../..). 
+> Deployed till db is alive on Render, if not - sorry ^).
+> Live demo [_here_](https://shared-shopping-list-ymr1.onrender.com). 
 
 ## Setup
 > To run this project, you'll need to install Docker and Docker Compose, then clone the project from GitHub and navigate to the root directory:
 
 ```
 $ git clone github/repo
+```
+```
 $ cd dir/to/project
+```
+```
 $ docker compose up --build -d
 ```
 > After dockeer compose is runing you can see the project at the url:
@@ -28,6 +32,8 @@ $ docker compose up --build -d
 
 ```
 $ docker compose up --build -d
+```
+```
 $ docker compose up -d shopping-lists database flyway && \ 
     docker compose run --entrypoint=npx e2e-playwright playwright test && \
     docker compose rm -sf e2e-playwright
