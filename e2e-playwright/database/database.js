@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+import { Pool } from "pg";
 
 
 const CONCURRENT_CONNECTIONS = 5;
